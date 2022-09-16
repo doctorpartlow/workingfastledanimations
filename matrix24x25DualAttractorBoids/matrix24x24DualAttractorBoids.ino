@@ -551,15 +551,20 @@ class Attractor {
     PVector location; // Location
     
   Attractor() {    
-    location = PVector(ROWS / random(1,3), COLS / random(1,3));
-    mass = 6;
-    G = .5;
+    location = PVector(ROWS / (float)random((float)1.1,(float)4.0), COLS / (float)random((float)1.1,(float)4.0));
+    mass = random(5.5,8);
+    G = (float)random((float)1.5F,(float)2.9F);//random(.5,1.1);
   }
-  
+  void UpdateLocation()
+  {
+    location = PVector(ROWS / (float)random((float)1.1,(float)4.0), COLS / (float)random((float)1.1,(float)4.0));
+    mass = random(5.5,8);
+    G = (float)random((float)1.5F,(float)2.9F);//random(.5,1.1);
+  }
   PVector attract(Boid m) {
     PVector force = location - m.location; // Calculate direction of force
     float d = force.mag(); // Distance between objects
-    d = constrain(d, 8.0, 12.0); // Limiting the distance to eliminate "extreme" results for very close or very far objects
+    d = constrain(d, 10.0, 12.0); // Limiting the distance to eliminate "extreme" results for very close or very far objects
     force.normalize(); // Normalize vector (distance doesn't matter here, we just want this vector for direction)        
     float strength = (G * mass * m.mass) / (d * d); // Calculate gravitional force magnitude
     force *= strength; // Get force vector --> magnitude * direction
@@ -575,8 +580,8 @@ void draw(){
   {
     loadingFlag = false;    
     start();     
-    attractor.location = PVector(5,5);
-    attractor2.location = PVector(18,18);
+    attractor.location = PVector(ROWS/4,COLS/1.5);
+    attractor2.location = PVector(ROWS/1.5,COLS/4);
   }
   for (int i = 0; i < NUM_PARTICLES; i++) {
     Boid boid = boids[i];    
@@ -585,6 +590,11 @@ void draw(){
     boid.applyForce(force);
     boid.applyForce(force2);
     boid.update();
+
+    EVERY_N_MILLISECONDS(8000) {  //applies new force every 8 seconds
+      attractor.UpdateLocation();
+      attractor2.UpdateLocation();
+    }
     // EVERY_N_MILLISECONDS(500) {
     //   boid.repelForce(force,random(0.0,365.0));
     // }
