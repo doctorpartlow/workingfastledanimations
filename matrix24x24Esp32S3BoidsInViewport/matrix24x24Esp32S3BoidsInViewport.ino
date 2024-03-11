@@ -555,25 +555,7 @@ void drawPixelXY(int8_t x, int8_t y, CRGB color)
   uint32_t thisPixel = XY((uint8_t)x, (uint8_t)y);
   leds[thisPixel] = color;
 }
-// void drawPixelXYF(float x, float y, CRGB color)
-// {
-//   // extract the fractional parts and derive their inverses
-//   uint8_t xx = (x - (int)x) * 255, yy = (y - (int)y) * 255, ix = 255 - xx, iy = 255 - yy;
-// // calculate the intensities for each affected pixel
-// #define WU_WEIGHT(a, b) ((uint8_t)(((a) * (b) + (a) + (b)) >> 8))
-//   uint8_t wu[4] = {WU_WEIGHT(ix, iy), WU_WEIGHT(xx, iy),
-//                    WU_WEIGHT(ix, yy), WU_WEIGHT(xx, yy)};
-//   // multiply the intensities by the colour, and saturating-add them to the pixels
-//   for (uint8_t i = 0; i < 4; i++)
-//   {
-//     int16_t xn = x + (i & 1), yn = y + ((i >> 1) & 1);
-//     CRGB clr = getPixColorXY(xn, yn);
-//     clr.r = qadd8(clr.r, (color.r * wu[i]) >> 8);
-//     clr.g = qadd8(clr.g, (color.g * wu[i]) >> 8);
-//     clr.b = qadd8(clr.b, (color.b * wu[i]) >> 8);
-//     drawPixelXY(xn, yn, clr);
-//   }
-// }
+
 void drawPixelXYF(float virtualX, float virtualY, CRGB color) {
   // Map virtual coordinates to the current view/window of the virtual space
   float mappedX = virtualX - virtualViewX; // Example mapping, adjust virtualViewX/Y based on your logic
